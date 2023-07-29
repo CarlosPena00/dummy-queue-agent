@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  worker:
+    build: .
+    security_opt:
+      - seccomp:unconfined
+    ports:
+      - "8000:8000"
