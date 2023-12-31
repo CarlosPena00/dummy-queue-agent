@@ -7,15 +7,29 @@
 annotated-types==0.6.0
     # via pydantic
 anyio==4.2.0
-    # via starlette
+    # via
+    #   httpx
+    #   starlette
+certifi==2023.11.17
+    # via
+    #   httpcore
+    #   httpx
 click==8.1.7
     # via uvicorn
 fastapi==0.108.0
     # via template_python (setup.cfg)
 h11==0.14.0
-    # via uvicorn
+    # via
+    #   httpcore
+    #   uvicorn
+httpcore==1.0.2
+    # via httpx
+httpx==0.26.0
+    # via template_python (setup.cfg)
 idna==3.6
-    # via anyio
+    # via
+    #   anyio
+    #   httpx
 mypy==1.8.0
     # via template_python (setup.cfg)
 mypy-extensions==1.0.0
@@ -27,7 +41,9 @@ pydantic==2.5.3
 pydantic-core==2.14.6
     # via pydantic
 sniffio==1.3.0
-    # via anyio
+    # via
+    #   anyio
+    #   httpx
 starlette==0.32.0.post1
     # via fastapi
 typing-extensions==4.9.0

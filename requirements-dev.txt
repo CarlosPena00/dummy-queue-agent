@@ -8,6 +8,7 @@ annotated-types==0.6.0
     # via pydantic
 anyio==4.2.0
     # via
+    #   httpx
     #   jupyter-server
     #   starlette
 argon2-cffi==23.1.0
@@ -33,7 +34,10 @@ black==23.12.1
 bleach==6.1.0
     # via nbconvert
 certifi==2023.11.17
-    # via requests
+    # via
+    #   httpcore
+    #   httpx
+    #   requests
 cffi==1.16.0
     # via argon2-cffi-bindings
 cfgv==3.4.0
@@ -71,12 +75,19 @@ flake8==6.1.0
 fqdn==1.5.1
     # via jsonschema
 h11==0.14.0
-    # via uvicorn
+    # via
+    #   httpcore
+    #   uvicorn
+httpcore==1.0.2
+    # via httpx
+httpx==0.26.0
+    # via template_python (setup.cfg)
 identify==2.5.33
     # via pre-commit
 idna==3.6
     # via
     #   anyio
+    #   httpx
     #   jsonschema
     #   requests
 iniconfig==2.0.0
@@ -279,7 +290,9 @@ six==1.16.0
     #   python-dateutil
     #   rfc3339-validator
 sniffio==1.3.0
-    # via anyio
+    # via
+    #   anyio
+    #   httpx
 soupsieve==2.5
     # via beautifulsoup4
 stack-data==0.6.3
