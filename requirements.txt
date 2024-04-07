@@ -2,46 +2,52 @@
 #    uv pip compile setup.cfg -o requirements.txt
 annotated-types==0.6.0
     # via pydantic
-anyio==4.2.0
+anyio==4.3.0
     # via
     #   httpx
     #   starlette
-certifi==2023.11.17
+certifi==2024.2.2
     # via
     #   httpcore
     #   httpx
 click==8.1.7
     # via uvicorn
-fastapi==0.108.0
+exceptiongroup==1.2.0
+    # via anyio
+fastapi==0.110.1
 h11==0.14.0
     # via
     #   httpcore
     #   uvicorn
-httpcore==1.0.2
+httpcore==1.0.5
     # via httpx
-httpx==0.26.0
+httpx==0.27.0
 idna==3.6
     # via
     #   anyio
     #   httpx
-mypy==1.8.0
+mypy==1.9.0
 mypy-extensions==1.0.0
     # via mypy
-numpy==1.26.2
-pydantic==2.5.3
+numpy==1.26.4
+pydantic==2.6.4
     # via fastapi
-pydantic-core==2.14.6
+pydantic-core==2.16.3
     # via pydantic
-sniffio==1.3.0
+sniffio==1.3.1
     # via
     #   anyio
     #   httpx
-starlette==0.32.0.post1
+starlette==0.37.2
     # via fastapi
-typing-extensions==4.9.0
+tomli==2.0.1
+    # via mypy
+typing-extensions==4.11.0
     # via
+    #   anyio
     #   fastapi
     #   mypy
     #   pydantic
     #   pydantic-core
-uvicorn==0.25.0
+    #   uvicorn
+uvicorn==0.29.0
