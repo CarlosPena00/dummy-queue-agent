@@ -28,5 +28,5 @@ repos:
             types-requests,
             types-cachetools,
             boto3-stubs,
-            types-boto3-lite
+            types-boto3-lite,
           ]
