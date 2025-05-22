@@ -3,5 +3,5 @@ channels:
   - conda-forge
 dependencies:
   - python=3.12
-  - pip-tools
-  - uv
+  - pip:
+    - uv

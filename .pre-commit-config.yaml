@@ -1,40 +1,32 @@
-default_language_version:
-  python: python3.12
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
+    rev: 'v5.0.0'
     hooks:
-      - id: check-merge-conflict
-      - id: check-ast
-      - id: check-added-large-files
+      - id: trailing-whitespace
       - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
       - id: mixed-line-ending
         args: [--fix=lf]
-      - id: trailing-whitespace
-      - id: check-docstring-first
-      - id: check-yaml
-  - repo: https://github.com/asottile/reorder_python_imports
-    rev: v3.12.0
+        exclude: '\.bat$'
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.5.5
     hooks:
-      - id: reorder-python-imports
-  - repo: https://github.com/psf/black
-    rev: 24.3.0
-    hooks:
-      - id: black
-  - repo: https://github.com/PyCQA/flake8
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-        additional_dependencies:
-          - flake8-unused-arguments
-          - pep8-naming
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.9.0
-    hooks:
-      - id: mypy
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    # Ruff version.
-    rev: v0.3.5
+      - id: remove-tabs
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: 'v0.11.2'
     hooks:
       - id: ruff
-        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 'v1.13.0'
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          [
+            types-pytz,
+            types-requests,
+            types-cachetools,
+            boto3-stubs,
+            types-boto3-lite
+          ]
