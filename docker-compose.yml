@@ -5,6 +5,8 @@ services:
     build:
       context: .
       target: runtime
+    security_opt:
+      - seccomp:unconfined
     container_name: data-ingestion-service
     depends_on:
       - mongodb
