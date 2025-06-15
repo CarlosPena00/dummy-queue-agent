@@ -82,24 +82,23 @@ This will start:
 ## Configuration
 
 Configuration is managed through:
-- Environment variables with the `INGEST_` prefix
 - `.env` file (for local development)
 
 Key configuration options:
 
 - **RabbitMQ**:
-  - `INGEST_RABBITMQ_HOST`: RabbitMQ host
-  - `INGEST_RABBITMQ_PORT`: RabbitMQ port
-  - `INGEST_RABBITMQ_QUEUES`: List of queues to consume from
+  - `RABBITMQ_HOST`: RabbitMQ host
+  - `RABBITMQ_PORT`: RabbitMQ port
+  - `RABBITMQ_QUEUES`: List of queues to consume from
 
 - **MongoDB**:
-  - `INGEST_MONGODB_URI`: MongoDB connection URI
-  - `INGEST_MONGODB_DB_NAME`: MongoDB database name
+  - `MONGODB_URI`: MongoDB connection URI
+  - `MONGODB_DB_NAME`: MongoDB database name
 
 - **API**:
-  - `INGEST_API_HOST`: API host
-  - `INGEST_API_PORT`: API port
-  - `INGEST_API_WORKERS`: Number of API workers
+  - `API_HOST`: API host
+  - `API_PORT`: API port
+  - `API_WORKERS`: Number of API workers
 
 ## Message Format
 
@@ -138,7 +137,8 @@ Example product message:
 Run tests with pytest:
 
 ```bash
-pytest tests/
+coverage run -m pytest
+coverage report -m
 ```
 
 For unit tests only:
