@@ -1,9 +1,50 @@
-version: '3'
+version: "3.8"
 
 services:
-  worker:
-    build: .
-    security_opt:
-      - seccomp:unconfined
+  app:
+    build:
+      context: .
+      target: runtime
+    container_name: data-ingestion-service
+    depends_on:
+      - mongodb
+      - rabbitmq
     ports:
       - "8000:8000"
+    volumes:
+      - ./logs:/src/logs
+    environment:
+      - INGEST_ENV=production
+      - INGEST_RABBITMQ_HOST=rabbitmq
+      - INGEST_RABBITMQ_PORT=5672
+      - INGEST_MONGODB_URI=mongodb://mongodb:27017/data_ingestion
+    command: python -m src.main
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:5
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=data_ingestion
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # AMQP port
+      - "15672:15672"  # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    restart: unless-stopped
+
+volumes:
+  mongodb_data:
+  rabbitmq_data:
