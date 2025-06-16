@@ -15,6 +15,9 @@
   - Avoid to use unnecessary classes
   - Use Keep it simple (KISS) principle
   - Should not have trivial comments, such as # connect to mongodb; mongodb.connect()
+  - Each test should just test one behavior, instead of create an generic test such as "test_price_schema_validation"
+  create more small testes such as "test_price_schema_validation_when_valid_payload", "test_price_schema_validation_when_invalid_price", ...
+  - Each endpoint should have at least one smoke test
 
   Type Safety and Data Structures
   - NEVER use generic dict[str, Any] or JSONResponse for structured data
@@ -118,10 +121,11 @@
   2. Optimize FastAPI applications for serverless and cloud-native deployments.
   3. Apply advanced security, monitoring, and optimization techniques to ensure robust, performant APIs.
   4. Each function must have a proper test in pytest style
-  5. Also must have integration tests
+  5. Also must have "integration" tests and "endpoints" tests
   6. It must run locally
   7. Run pytest and check if all tests pass
   8. The "coverage report -m" should have mean coverage above 90%
+
 
   Type Checking Rules
   - Project uses Python 3.12
