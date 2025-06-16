@@ -1,5 +1,5 @@
 # file: Dockerfile
-FROM python:3.11-slim-bullseye as base
+FROM python:3.12-slim-bullseye as base
 
 ENV \
     PYTHONDONTWRITEBYTECODE=1 \

@@ -24,7 +24,7 @@ The service follows a clean, modular architecture:
 
 ## Requirements
 
-- Python 3.11+
+- Python 3.12+
 - RabbitMQ
 - MongoDB/DocumentDB
 - Docker and docker-compose (for containerized deployment)
