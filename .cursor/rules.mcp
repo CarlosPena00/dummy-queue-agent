@@ -13,7 +13,7 @@
   - All secrets values must be stored on .env file
   - All dependencies must be added in setup.cfg file, It is not necessary to fix the version for all libraries, only when there is a specific reason
   - Avoid to use unnecessary classes
-  - Use KISS principle
+  - Use Keep it simple (KISS) principle
   - Should not have trivial comments, such as # connect to mongodb; mongodb.connect()
 
   Type Safety and Data Structures
@@ -87,6 +87,8 @@
   - Use API Gateway for rate limiting, request transformation, and security filtering.
   - Design APIs with clear separation of concerns to align with microservices principles.
   - Implement inter-service communication using message brokers (RabbitMQ) for event-driven architectures.
+  - Use faststream python library as interface with message broker (RabbitMQ). With model validation and FastAPI integration.
+
 
   Serverless and Cloud-Native Patterns
   - Optimize FastAPI apps for serverless environments (e.g., AWS Lambda, Azure Functions) by minimizing cold start times.
