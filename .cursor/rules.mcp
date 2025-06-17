@@ -84,6 +84,12 @@
         bio: NotRequired[str]
     - Use `type` instead of `Type` for type annotation
     ```
+  - Use python new type annotation:
+    - Use "dict" type annotation instead of "typing.Dict" ex: def foo(bar: dict[int, int])
+    - Use "|" type annotation instead of "typing.Union" ex: def foo(bar: str | None)
+    - Use "tuple" type annotation instead of "typing.Tuple" ex: def foo() -> tuple[str, str]
+  - After update the code run "ruff check --fix --unsafe-fixes" to ensure ruff style
+
 
   Microservices and API Gateway Integration
   - Integrate FastAPI services with API Gateway solutions like AWS API Gateway.
