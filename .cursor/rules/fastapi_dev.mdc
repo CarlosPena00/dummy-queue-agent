@@ -4,153 +4,169 @@ globs:
 alwaysApply: true
 ---
 
-You are an expert in Python, FastAPI, microservices architecture, and serverless environments.
+You are an expert in Python 3.12, FastAPI, microservices architecture, and serverless environments.
+All code must be idiomatic, typed, testable, and observable with performance and simplicity in mind.
 
-This projects uses micromamba envoriment, to activate it:
-> micromamba activate `basename "$PWD"`
+====================================
+🔧 Environment Setup
+====================================
 
-Advanced Principles
-- Design services to be stateless; leverage external storage and caches (e.g., Redis) for state persistence.
-- Implement API gateways and reverse proxies (e.g., NGINX, Traefik) for handling traffic to microservices.
-- Use circuit breakers and retries for resilient service communication.
-- Favor serverless deployment for reduced infrastructure overhead in scalable environments.
-- Use asynchronous workers (e.g., Celery, RQ) for handling background tasks efficiently.
-- All secrets and configmap must be listed in src/core/settings.py
-- All secrets values must be stored on .env file
-- All dependencies must be added in setup.cfg file, It is not necessary to fix the version for all libraries, only when there is a specific reason
-- Avoid to use unnecessary classes
-- Use Keep it simple (KISS) principle
-- Should not have trivial comments, such as # connect to mongodb; mongodb.connect()
-- Each test should just test one behavior, instead of create an generic test such as "test_price_schema_validation"
-create more small testes such as "test_price_schema_validation_when_valid_payload", "test_price_schema_validation_when_invalid_price", ...
-- Each endpoint should have at least one smoke test
+This project uses Micromamba for environment isolation.
 
-Type Safety and Data Structures
-- NEVER use generic dict[str, Any] or JSONResponse for structured data
-- ALWAYS use TypedDict for structured dictionary data
-- Each TypedDict must be properly documented with docstring and field descriptions
-- Place TypedDict definitions inside models folder within each module
-- Example of proper TypedDict usage:
-    ```python
-    class UserData(TypedDict):
-        """User data structure.
+Activate the environment using:
+> micromamba activate "$(basename "$PWD")"
 
-        Fields:
-            id: Unique user identifier
-            username: User's display name
-            created_at: Account creation timestamp
-        """
-        id: str
-        username: str
-        created_at: datetime
-    ```
-- Use TypedDict for:
-    - API request/response models
-    - Database documents
-    - Message payloads
-    - Configuration structures
-    - Any dictionary with known field structure
-- When extending TypedDict, use proper inheritance and document all fields:
-    ```python
-    class BaseDocument(TypedDict):
-        """Base document fields.
+====================================
+📐 Engineering Principles
+====================================
 
-        Fields:
-            id: Document unique identifier
-            created_at: Document creation timestamp
-        """
-        id: str
-        created_at: datetime
+- Design stateless services. Persist state externally (e.g., Redis, S3, DocumentDB, Postgres).
+- Use API gateways (NGINX, Traefik, AWS API Gateway) for traffic control and security.
+- Apply circuit breakers, retries, and timeouts for inter-service resilience.
+- Favor serverless deployment (AWS Lambda, Azure Functions) for scalable execution.
+- All secrets/configs must be defined in `src/settings.py` and values stored in `.env`.
+- Declare dependencies in `setup.cfg`; only pin versions if justified.
+- Follow the KISS principle; avoid unnecessary classes.
+- Do NOT include trivial comments (e.g., # connect to MongoDB).
+- Each test should validate a single behavior using fine-grained naming:
+  ✅ test_price_schema_validation_when_valid_payload
+  ✅ test_price_schema_validation_when_invalid_price
+- Ensure each endpoint has a smoke test.
+- Each flow must have integration test.
 
-    class UserDocument(BaseDocument):
-        """User document with additional fields.
+====================================
+📦 TypedDicts and Type Safety
+====================================
 
-        Fields:
-            username: User's display name
-            email: User's email address
-        """
-        username: str
-        email: str
-    ```
-- Only use dict[str, Any] for truly dynamic data where structure is unknown
-- For optional fields in TypedDict, use NotRequired:
-    ```python
-    from typing import NotRequired
+- NEVER use `dict[str, Any]` or `JSONResponse` for structured data.
+- ALWAYS use `TypedDict` for all structured dictionaries:
+  - API request/response schemas
+  - Database documents
+  - Broker messages
+  - Configuration structures
 
-    class UserProfile(TypedDict):
-        """User profile data.
+- Place all TypedDicts in the `models/` folder of each module.
+- Every TypedDict must include complete docstrings:
 
-        Fields:
-            name: User's full name
-            age: User's age (optional)
-            bio: User's biography (optional)
-        """
-        name: str
-        age: NotRequired[int]
-        bio: NotRequired[str]
-    - Use `type` instead of `Type` for type annotation
-    ```
-- Use python new type annotation:
-    - Use "dict" type annotation instead of "typing.Dict" ex: def foo(bar: dict[int, int])
-    - Use "|" type annotation instead of "typing.Union" ex: def foo(bar: str | None)
-    - Use "tuple" type annotation instead of "typing.Tuple" ex: def foo() -> tuple[str, str]
-- After update the code run "ruff check --fix --unsafe-fixes" to ensure ruff style
+Example:
+```python
+class UserData(TypedDict):
+    """User data structure.
 
+    Fields:
+        id: Unique identifier
+        username: Display name
+        created_at: Timestamp
+    """
+    id: str
+    username: str
+    created_at: datetime
+```
 
-Microservices and API Gateway Integration
-- Integrate FastAPI services with API Gateway solutions like AWS API Gateway.
-- Use API Gateway for rate limiting, request transformation, and security filtering.
-- Design APIs with clear separation of concerns to align with microservices principles.
-- Implement inter-service communication using message brokers (RabbitMQ) for event-driven architectures.
-- Use faststream python library as interface with message broker (RabbitMQ). With model validation and FastAPI integration.
+- Inherit TypedDicts when needed and document all fields.
+- Use `NotRequired` for optional fields:
 
+```python
+from typing import NotRequired
 
-Serverless and Cloud-Native Patterns
-- Optimize FastAPI apps for serverless environments (e.g., AWS Lambda, Azure Functions) by minimizing cold start times.
-- Package FastAPI applications using lightweight containers or as a standalone binary for deployment in serverless setups.
-- Use managed services (NOSQL AWS documentdb) for scaling databases without operational overhead.
-- Implement automatic scaling with serverless functions to handle variable loads effectively.
+class UserProfile(TypedDict):
+    name: str
+    age: NotRequired[int]
+    bio: NotRequired[str]
+```
 
-Advanced Middleware and Security
-- Implement custom middleware for detailed logging, tracing, and monitoring of API requests.
-- Use OpenTelemetry or similar libraries for distributed tracing in microservices architectures.
-- Apply security best practices: OAuth2 for secure API access, rate limiting, and DDoS protection.
-- Use security headers (e.g., CORS, CSP) and implement content validation using tools like OWASP Zap.
+- Use PEP 604/585:
+  - ✅ dict instead of typing.Dict
+  - ✅ str | None instead of typing.Union
+  - ✅ tuple instead of typing.Tuple
+  - ✅ type instead of Type
+- After code changes, run:
+  > ruff check --fix --unsafe-fixes
 
-Optimizing for Performance and Scalability
-- Leverage FastAPI's async capabilities for handling large volumes of simultaneous connections efficiently.
-- Optimize backend services for high throughput and low latency; use databases optimized for read-heavy workloads (e.g., Elasticsearch).
-- Use caching layers (e.g., Redis, Memcached) to reduce load on primary databases and improve API response times.
-- Apply load balancing and service mesh technologies (e.g., Istio, Linkerd) for better service-to-service communication and fault tolerance.
+====================================
+🔀 Microservices & API Gateway
+====================================
 
-Monitoring and Logging
-- Use Prometheus and Grafana for monitoring FastAPI applications and setting up alerts.
-- Implement structured logging for better log analysis and observability.
-- Integrate with centralized logging systems (e.g., ELK Stack, AWS CloudWatch) for aggregated logging and monitoring.
+- Integrate FastAPI with AWS API Gateway (rate-limiting, filtering, routing).
+- Follow separation-of-concerns when designing services.
+- Use RabbitMQ for message-based async comms.
+- Interface using `faststream` for message broker validation and FastAPI hooks.
 
-Key Conventions
-1. Follow microservices principles for building scalable and maintainable services.
-2. Optimize FastAPI applications for serverless and cloud-native deployments.
-3. Apply advanced security, monitoring, and optimization techniques to ensure robust, performant APIs.
-4. Each function must have a proper test in pytest style. The name pattern should be: "test_<function/class>_<test-objective>"
-5. Also must have "integration" tests and "endpoints" tests
-6. It must run locally
-7. Run pytest and check if all tests pass
-8. The "coverage report -m" should have mean coverage above 90%
+====================================
+☁️ Serverless Best Practices
+====================================
 
+- Optimize cold start: avoid heavy imports, minimize dependencies.
+- Use AWS DocumentDB for NoSQL persistence.
+- Enable auto-scaling via serverless configuration.
 
-Type Checking Rules
-- Project uses Python 3.12
-- All source code in src/ directory must have complete type annotations
-- Test files in tests/ directory are exempt from the no-untyped-def rule
-- Use mypy for static type checking with strict mode enabled
-- Configure mypy to ignore no-untyped-def errors in test files:
-    [mypy]
-    python_version = 3.12
-    disallow_untyped_defs = True
+====================================
+🔐 Middleware & Security
+====================================
 
-    [mypy-tests.*]
-    disallow_untyped_defs = False
+- Create custom middleware for tracing, logging, metrics.
+- Integrate OpenTelemetry for distributed tracing.
+- Apply:
+  - OAuth2 for secured routes
+  - Rate-limiting
+  - DDoS protection
+  - CORS, CSP headers
+  - OWASP Zap for security regression testing
 
-Refer to FastAPI, microservices, and serverless documentation for best practices and advanced usage patterns.
-Please, use RUFF and Mypy style guide
+====================================
+🚀 Performance & Scalability
+====================================
+
+- Use FastAPI async handlers for I/O-bound concurrency.
+- Optimize reads with systems like Elasticsearch or Redis.
+- Leverage caching layers to avoid DB pressure.
+- Deploy service meshes (e.g., Istio, Linkerd) for routing, retries, health checks.
+
+====================================
+📈 Monitoring & Logging
+====================================
+
+- Use Prometheus + Grafana for metrics, uptime, alerting.
+- Use loguru library to write logs
+- Centralize logs with ELK/CloudWatch and use structured logging.
+
+====================================
+🧪 Testing & Coverage
+====================================
+
+- Every code (function/class/etc) must be covered with:
+  - Unit tests (Allowed to mock IO such as RabbitMQ broker, MongoDB, Postgres, etc)
+  - Endpoint tests
+  - Integration tests
+- Naming pattern: `test_<function/class>_<scenario>`
+- Use `pytest`, validate with:
+  > pytest && coverage report -m
+- Maintain ≥ 90% coverage
+- Ensure local run without external dependencies
+
+====================================
+🧰 Type Checking Rules
+====================================
+
+- Python 3.12 only.
+- All `src/` code must have complete type annotations.
+- `tests/` are exempt from the `no-untyped-def` rule.
+
+mypy config:
+```ini
+[mypy]
+python_version = 3.12
+disallow_untyped_defs = True
+
+[mypy-tests.*]
+disallow_untyped_defs = False
+```
+
+====================================
+📚 References
+====================================
+
+- FastAPI: https://fastapi.tiangolo.com
+- FastStream: https://faststream.dev
+- OpenTelemetry: https://opentelemetry.io/docs/instrumentation/python/
+- AWS Serverless Patterns: https://serverlessland.com/patterns
