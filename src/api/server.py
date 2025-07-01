@@ -10,7 +10,7 @@ from loguru import logger
 
 from src.consumers.stock_consumer import broker
 from src.consumers.stock_consumer import router as stock_router
-from src.core.settings import settings
+from src.settings import settings
 
 
 @asynccontextmanager

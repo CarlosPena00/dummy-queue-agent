@@ -10,8 +10,8 @@ from faststream.rabbit import RabbitBroker
 from loguru import logger
 from pydantic import BaseModel
 
-from src.core.settings import settings
 from src.models.stock import StockPayload
+from src.settings import settings
 
 router = APIRouter(prefix="/stock", tags=["stock"])
 broker = RabbitBroker(settings.RABBITMQ_URL)
