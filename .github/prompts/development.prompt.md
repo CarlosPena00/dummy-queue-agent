@@ -1,7 +1,5 @@
 ---
-description:
-globs:
-alwaysApply: true
+mode: 'edit'
 ---
 
 # =========== 📊 ENGINEERING PRINCIPLES
